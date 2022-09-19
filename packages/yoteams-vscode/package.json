@@ -1,6 +1,6 @@
 {
-  "name": "yo-teams",
-  "displayName": "yo teams",
+  "name": "yoteams-vscode",
+  "displayName": "yoteams-vscode",
   "description": "An extension for yo Teams within VS Code to make Teams development even easier",
   "version": "0.0.1",
   "engines": {
@@ -10,13 +10,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:yo-teams.helloWorld"
+    "onCommand:yoteams-vscode.helloWorld"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "yo-teams.helloWorld",
+        "command": "yoteams-vscode.helloWorld",
         "title": "Hello World"
       }
     ]
