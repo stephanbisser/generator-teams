@@ -108,7 +108,7 @@ export class TabGenerator extends Generator {
                         when: (answers: any) => {
                             return (this.options.existingManifest === undefined ||
                                 this.options.existingManifest &&
-                                this.options.existingManifest.webApplicationInfo == undefined);
+                                this.options.existingManifest.webApplicationInfo == undefined || !(this.options.tabSSO));
                         },
                     },
                     {

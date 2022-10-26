@@ -53,6 +53,38 @@ export class GeneratorTeamsApp extends Generator {
             description: 'The Teams manifest version you would like to use',
             required: false
         });
+        this.argument('quickScaffolding', {
+            description: 'Option to use quick scaffolding',
+            required: false
+        });
+        this.argument('parts', {
+            description: 'Determines which parts of the project to generate',
+            required: false
+        });
+        this.argument('host', {
+            description: 'The host URL of your solution',
+            required: false
+        });
+        this.argument('showLoadingIndicator', {
+            description: 'Option to show a loading indicator',
+            required: false
+        });
+        this.argument('tabTitle', {
+            description: 'The name of the tab to be set',
+            required: false
+        });
+        this.argument('tabType', {
+            description: 'The type of tab to generate',
+            required: false
+        });
+        this.argument('tabScopes', {
+            description: 'The scope of the tab to generate',
+            required: false
+        });
+        this.argument('tabSSO', {
+            description: 'Determines if you need SSO for your tab',
+            required: false
+        });
         this.option('telemetry', {
             type: Boolean,
             default: true,
@@ -251,6 +283,7 @@ export class GeneratorTeamsApp extends Generator {
                     name: "quickScaffolding",
                     message: `Quick scaffolding`,
                     prefix: generatorPrefix,
+                    when: () => !(this.options.quickScaffolding || this.options.existingManifest),
                     default: true
                 },
                 {
@@ -322,7 +355,7 @@ export class GeneratorTeamsApp extends Generator {
                             value: "localization"
                         }
                     ],
-                    when: (answers: IAnswers) => answers.confirmedAdd != false
+                    when: (answers: IAnswers) => answers.confirmedAdd != false || !(this.options.tab)
                 },
                 {
                     type: 'input',
@@ -333,7 +366,7 @@ export class GeneratorTeamsApp extends Generator {
                         return `https://${lodash.camelCase(answers.solutionName).toLocaleLowerCase()}.azurewebsites.net`;
                     },
                     validate: Yotilities.validateUrl,
-                    when: () => !this.options.existingManifest,
+                    when: () => !this.options.existingManifest || !(this.options.host)
                 },
                 {
                     type: 'confirm',
@@ -341,7 +374,7 @@ export class GeneratorTeamsApp extends Generator {
                     message: 'Would you like show a loading indicator when your app/tab loads?',
                     prefix: generatorPrefix,
                     default: false, // set to false until the 20 second timeout bug is fixed in Teams
-                    when: () => !this.options.existingManifest
+                    when: () => !this.options.existingManifest || !(this.options.showLoadingIndicator)
                 },
                 {
                     type: 'confirm',
