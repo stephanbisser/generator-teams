@@ -41,6 +41,18 @@ export class GeneratorTeamsApp extends Generator {
             description: 'Solution name, as well as folder name',
             required: false
         });
+        this.argument('name', {
+            description: 'Title of your Microsoft Teams App project',
+            required: false
+        });
+        this.argument('developer', {
+            description: 'Your (company) name',
+            required: false
+        });
+        this.argument('manifestVersion', {
+            description: 'The Teams manifest version you would like to use',
+            required: false
+        });
         this.option('telemetry', {
             type: Boolean,
             default: true,
@@ -200,7 +212,7 @@ export class GeneratorTeamsApp extends Generator {
                     name: 'name',
                     message: 'Title of your Microsoft Teams App project?',
                     prefix: generatorPrefix,
-                    when: () => !this.options.existingManifest,
+                    when: () => !(this.options.name || this.options.existingManifest),
                     default: this.appname
                 },
                 {
@@ -212,7 +224,7 @@ export class GeneratorTeamsApp extends Generator {
                     validate: (input: string) => {
                         return input.length > 0 && input.length <= 32;
                     },
-                    when: () => !this.options.existingManifest,
+                    when: () => !(this.options.developer || this.options.existingManifest),
                     store: true
                 },
                 {
@@ -232,7 +244,7 @@ export class GeneratorTeamsApp extends Generator {
                     default: versions.find((v: inquirer.ChoiceOptions) => v.extra.default) ?
                         versions.find((v: inquirer.ChoiceOptions) => v.extra.default)!.value :
                         (versions[0] ? versions[0].value : ""),
-                    when: (answers: IAnswers) => (this.options.existingManifest && answers.updateManifestVersion && versions.length > 0) || (!this.options.existingManifest)
+                    when: (answers: IAnswers) => (this.options.existingManifest && answers.updateManifestVersion && versions.length > 0) || !(this.options.manifestVersion || this.options.existingManifest)
                 },
                 {
                     type: "confirm",
