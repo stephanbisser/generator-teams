@@ -77,6 +77,12 @@ export class GeneratorTeamsApp extends Generator {
         }
 
         this.options.existingManifest = this.fs.readJSON(`./src/manifest/manifest.json`);
+
+
+        if (this.fs.exists('./src/index.tsx') as unknown as boolean) {
+            console.log('React app detected')
+            this.options.reactAppDetected = true;
+          }
     }
 
     public initializing() {
@@ -87,6 +93,10 @@ export class GeneratorTeamsApp extends Generator {
         this.composeWith('teams:connector', { 'options': this.options });
         this.composeWith('teams:messageExtension', { 'options': this.options });
         this.composeWith('teams:localization', { 'options': this.options });
+
+        if(this.options.reactAppDetected){
+            
+        }
 
         // check schema version:
         const isSchemaVersionValid = ManifestGeneratorFactory.isSchemaVersionValid(this.options.existingManifest);
@@ -163,6 +173,14 @@ export class GeneratorTeamsApp extends Generator {
                 },
                 {
                     type: 'confirm',
+                    name: 'confirmedAdd',
+                    default: false,
+                    message: `You are running the generator on an already existing React project it seems. Shall we turn that into a yo teams based project?`,
+                    prefix: generatorPrefix,
+                    when: () => this.options.reactAppDetected,
+                },
+                {
+                    type: 'confirm',
                     name: 'updateBuildSystem',
                     default: false,
                     message: 'Update yo teams core files? WARNING: Ensure your source code is under version control so you can merge any customizations of the core files!',
@@ -173,7 +191,7 @@ export class GeneratorTeamsApp extends Generator {
                     type: 'input',
                     name: 'solutionName',
                     default: lodash.kebabCase(this.appname),
-                    when: () => !(this.options.solutionName || this.options.existingManifest),
+                    when: () => !(this.options.solutionName || this.options.existingManifest || this.options.reactAppDetected),
                     prefix: generatorPrefix,
                     message: 'What is your solution name?',
                 },
@@ -181,7 +199,7 @@ export class GeneratorTeamsApp extends Generator {
                     type: 'list',
                     name: 'whichFolder',
                     default: 'current',
-                    when: () => !(this.options.solutionName || this.options.existingManifest),
+                    when: () => !(this.options.solutionName || this.options.existingManifest || this.options.reactAppDetected),
                     message: 'Where do you want to place the files?',
                     prefix: generatorPrefix,
                     choices: [

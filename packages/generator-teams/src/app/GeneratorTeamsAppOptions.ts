@@ -98,4 +98,5 @@ export class GeneratorTeamsAppOptions {
     localization: boolean;
     defaultLanguage: string | undefined;
     additionalLanguage: string | undefined;
+    reactAppDetected: boolean = false;
 }
