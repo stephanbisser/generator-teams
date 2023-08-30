@@ -40,6 +40,8 @@
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
     "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "@vscode/test-electron": "^2.1.5",
+    "github-directory-downloader": "^1.3.6",
+    "fast-glob": "^3.2.11"
   }
 }
